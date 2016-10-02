@@ -14,14 +14,23 @@ namespace M2MqttAkkaNet
             Reference = reference;
         }
     }
-    public class UnderlyingSubsAck
+    public class UnderlyingSubsOkAck
+    {
+        public ushort MessageId { get; }
+        public UnderlyingSubsOkAck(ushort messageId)
+        {
+            MessageId = messageId;
+        }
+    }
+
+    public class UnderlyingSubsErrorAck
     {
         public string Topic { get; }
-        public Exception Fail { get; }
-        public UnderlyingSubsAck(string topic, Exception fail)
+        public Fail Fail { get; }
+        public UnderlyingSubsErrorAck(string topic, Exception exception)
         {
             Topic = topic;
-            Fail = fail;
+            Fail = new Fail(exception);
         }
     }
 }

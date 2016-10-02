@@ -22,30 +22,41 @@ namespace M2MqttAkkaNet
     public class SubscribeAck
     {
         public Subscribe Subscribe { get; }
-        public Exception Fail { get; }
+        public Fail Fail { get; }
 
-        public SubscribeAck(Subscribe subscribe, Exception fail)
+        public SubscribeAck(Subscribe subscribe, Fail fail)
         {
             Subscribe = subscribe;
             Fail = fail;
+        }
+
+        public bool IsOk() => Fail == null;
+    }
+
+    public class Fail
+    {
+        public string Message { get; }
+        public Fail(Exception exception)
+        {
+            Message = exception.Message;
         }
     }
 
     public class Message
     {
         public string Topic { get; }
-        public byte[] Payload { get; }
+        public string Body { get; }
 
-        public Message(string topic, string message)
+        public Message(string topic, string body)
         {
             Topic = topic;
-            Payload = Encoding.UTF8.GetBytes(message);
+            Body = body;
         }
 
         public Message(string topic, byte[] payload)
         {
             Topic = topic;
-            Payload = payload;
+            Body = Encoding.UTF8.GetString(payload);
         }
     }
     public class Publish

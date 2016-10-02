@@ -2,7 +2,7 @@
 
 namespace M2MqttAkkaNet
 {
-    public class PSConfig
+    public class MqttConfig
     {
         public string BrokerUrl { get; }
         public string UserName { get; }
@@ -15,7 +15,7 @@ namespace M2MqttAkkaNet
         private readonly TimeSpan reconnectDelayMax = TimeSpan.FromSeconds(30);
         private readonly int connectCountMax;
 
-        public PSConfig(string brokerUrl, string userName="", string password="", 
+        public MqttConfig(string brokerUrl, string userName="", string password="", 
             bool cleanSession = true, int stashCapacity = 8000)
         {            
             BrokerUrl = brokerUrl;
@@ -24,6 +24,11 @@ namespace M2MqttAkkaNet
             CleanSession = cleanSession;
             StashCapacity = stashCapacity;
             connectCountMax = Convert.ToInt32(Math.Floor(Math.Log(reconnectDelayMax.Ticks / reconnectDelayMin.Ticks) / Math.Log(2)));            
+        }
+
+        public MqttConfig(string brokerUrl) : this(brokerUrl, null, null, true, 8000)
+        {
+
         }
 
         public long ConnectDelay(int connectCount)
