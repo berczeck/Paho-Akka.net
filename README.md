@@ -6,7 +6,7 @@ Paho-Akka.net
 Publish Subscribe library for [Akka .NET](http://getakka.net/) to pub/sub to a MQTT server. Paho-Akka.net use [M2Mqtt](https://m2mqtt.wordpress.com/) for .Net as the underlying MQTT client.
 
 ## Install?
-Paho-Akka.net is on [Nuget](https://www.nuget.org/packages/paho-akkadotnet)
+Paho-Akka.net will be on [Nuget](https://www.nuget.org/packages/paho-akkadotnet) very soon
 
 ## How to use
 
