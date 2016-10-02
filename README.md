@@ -1,5 +1,6 @@
 Paho-Akka.net
 =========
+[![Build Status](https://travis-ci.org/berczeck/Paho-Akka.net.svg)](https://travis-ci.org/berczeck/Paho-Akka.net)
 
 ## What?
 Publish Subscribe library for [Akka .NET](http://getakka.net/) to pub/sub to a MQTT server. Paho-Akka.net use [M2Mqtt](https://m2mqtt.wordpress.com/) for .Net as the underlying MQTT client.
