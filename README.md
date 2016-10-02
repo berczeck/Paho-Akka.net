@@ -80,4 +80,5 @@ This software is licensed under the Apache 2 license:
 http://www.apache.org/licenses/LICENSE-2.0
 
 *Copyright 2016 Luis Alexander Aldazabal Gil (http://code2read.com/)*
+
 *Follow me on Twitter (https://twitter.com/berczeck)*
