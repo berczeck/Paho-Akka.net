@@ -5,7 +5,7 @@ using uPLibrary.Networking.M2Mqtt.Messages;
 
 namespace M2MqttAkkaNet
 {
-    internal class Subscribe
+    public class Subscribe
     {
         public IActorRef Reference { get; }
         public string Topic { get; }
@@ -19,19 +19,19 @@ namespace M2MqttAkkaNet
         }
     }
 
-    internal class SubscribeAck
+    public class SubscribeAck
     {
-        private readonly Subscribe _subscribe;
-        private readonly Exception _fail;
+        public Subscribe Subscribe { get; }
+        public Exception Fail { get; }
 
         public SubscribeAck(Subscribe subscribe, Exception fail)
         {
-            _subscribe = subscribe;
-            _fail = fail;
+            Subscribe = subscribe;
+            Fail = fail;
         }
     }
 
-    internal class Message
+    public class Message
     {
         public string Topic { get; }
         public byte[] Payload { get; }
@@ -48,12 +48,12 @@ namespace M2MqttAkkaNet
             Payload = payload;
         }
     }
-    internal class Publish
+    public class Publish
     {
         public Message Message { get; }
         public byte Qos { get; }
 
-        public Publish(Message message, byte qos)
+        public Publish(Message message, byte qos = MqttMsgBase.QOS_LEVEL_AT_MOST_ONCE)
         {
             Message = message;
             Qos = qos;

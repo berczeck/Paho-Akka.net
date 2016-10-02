@@ -3,10 +3,10 @@ using Akka.Actor;
 
 namespace M2MqttAkkaNet
 {
-    internal class Connect { }
-    internal class Connected { }
-    internal class Disconnected { }
-    internal class SubscriberTerminated
+    public class Connect { }
+    public class Connected { }
+    public class Disconnected { }
+    public class SubscriberTerminated
     {
         public IActorRef Reference { get; }
         public SubscriberTerminated(IActorRef reference)
@@ -14,7 +14,7 @@ namespace M2MqttAkkaNet
             Reference = reference;
         }
     }
-    internal class UnderlyingSubsAck
+    public class UnderlyingSubsAck
     {
         public string Topic { get; }
         public Exception Fail { get; }

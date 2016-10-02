@@ -16,7 +16,7 @@ namespace M2MqttAkkaNet
 
         private readonly MqttClient mqttClient;
         private readonly PSConfig psConfig;
-        
+
         private readonly Queue<Tuple<long, Publish>> pubStash = new Queue<Tuple<long, Publish>>();
         private readonly Queue<Subscribe> subStash = new Queue<Subscribe>();
 
@@ -31,7 +31,7 @@ namespace M2MqttAkkaNet
         {
             psConfig = config;
             mqttClient = new MqttClient(config.BrokerUrl);
-            
+
             StartWith(MqttClientStates.Disconnected, new object());
 
             When(MqttClientStates.Disconnected, Disconnected);
@@ -63,7 +63,7 @@ namespace M2MqttAkkaNet
                     Context.System.Log.Error(ex, $"Can't connect to {psConfig.BrokerUrl}");
                     DelayConnect();
                 }
-                connectCount ++;
+                connectCount++;
             }
 
             if (@event.FsmEvent is Connected)
@@ -77,13 +77,13 @@ namespace M2MqttAkkaNet
                 while (pubStash.Any())
                 {
                     var publish = pubStash.Dequeue();
-                    var notExpiredMessage = publish.Item1 > DateTime.UtcNow.Ticks;
+                    var notExpiredMessage = publish.Item1 > DateTime.Now.Ticks;
                     if (notExpiredMessage)
                     {
-                        Self.Tell(pubStash.Dequeue());
+                        Self.Tell(publish.Item2);
                     }
                 }
-                GoTo(MqttClientStates.Connected);
+                return GoTo(MqttClientStates.Connected);
             }
 
             if (@event.FsmEvent is Publish)
@@ -95,7 +95,7 @@ namespace M2MqttAkkaNet
                         pubStash.Dequeue();
                     }
                 }
-                var expiration = DateTime.UtcNow.Add(psConfig.StashTimeToLive).Ticks;
+                var expiration = DateTime.Now.Add(psConfig.StashTimeToLive).Ticks;
                 pubStash.Enqueue(new Tuple<long, Publish>(expiration, @event.FsmEvent as Publish));
             }
 
@@ -156,7 +156,7 @@ namespace M2MqttAkkaNet
             {
                 var subscribe = @event.FsmEvent as Subscribe;
                 var child = Context.Child(UrlEncode(subscribe.Topic));
-                if(!child.IsNobody())
+                if (!child.IsNobody())
                 {
                     child.Tell(subscribe);
                 }
@@ -178,7 +178,7 @@ namespace M2MqttAkkaNet
                     Context.System.Log.Error(ex, $"Can't unsubscribe from {terminated.ActorRef.Path.Name}");
                 }
             }
-                return Stay();
+            return Stay();
         }
 
         private State<MqttClientStates, object> UnHandled(Event<object> @event)
@@ -236,10 +236,10 @@ namespace M2MqttAkkaNet
             {
                 try
                 {
-                   var subscribeId = mqttClient.Subscribe(new string[] { sub.Topic}, new byte[] { sub.Qos });
+                    var subscribeId = mqttClient.Subscribe(new string[] { sub.Topic }, new byte[] { sub.Qos });
                     subscribeRequest.Add(subscribeId, sub.Topic);
                 }
-                catch (MqttClientException ex) when(!mqttClient.IsConnected)
+                catch (MqttClientException ex) when (!mqttClient.IsConnected)
                 {
                     Context.System.Log.Error(ex, $"Can't subscribe to {sub.Topic}");
                     Self.Tell(new Disconnected());
@@ -253,7 +253,7 @@ namespace M2MqttAkkaNet
             }
             subscribing.Add(sub);
         }
-        
+
         private void DelayConnect()
         {
             var delay = psConfig.ConnectDelay(connectCount);
