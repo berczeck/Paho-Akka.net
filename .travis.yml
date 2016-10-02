@@ -1,2 +1,2 @@
 language: csharp
-solution: PahoAkkaNet.sln
+solution: src/PahoAkkaNet/PahoAkkaNet.sln
