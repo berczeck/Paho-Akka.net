@@ -19,14 +19,14 @@ namespace M2MqttAkkaNet
 
         public void Connect()
         {
-            Connect(Guid.NewGuid().ToString(), _psConfig.UserName, _psConfig.Password);
+            Connect(DateTime.Now.ToString("akka_yyyyMMddhhmmssms"), _psConfig.UserName, _psConfig.Password);
             ConnectionClosed += MqttClient_ConnectionClosed;
             MqttMsgSubscribed += MqttClient_MqttMsgSubscribed;
             MqttMsgPublishReceived += MqttClient_MqttMsgPublishReceived;
             
             _owner.Tell(new Connected());
         }
-
+        
         public ushort Publish(Message message)
         {
             var payLoad = Encoding.UTF8.GetBytes(message.Body); ;

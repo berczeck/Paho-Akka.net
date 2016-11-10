@@ -15,7 +15,9 @@ namespace M2MMqttClient
             mqttClient.MqttMsgPublishReceived += MqttClient_MqttMsgPublishReceived;
             mqttClient.MqttMsgSubscribed += MqttClient_MqttMsgSubscribed;
             mqttClient.MqttMsgUnsubscribed += MqttClient_MqttMsgUnsubscribed;
-            byte code = mqttClient.Connect(Guid.NewGuid().ToString());
+
+            var clientId = DateTime.Now.ToString("akka_yyyyMMddhhmmssms");
+            byte code = mqttClient.Connect(clientId);
             Console.WriteLine($"Cliente connected: {mqttClient.IsConnected}");
 
             mqttClient.Subscribe(new string[] { "topic/uno" }, new byte[] { MqttMsgBase.QOS_LEVEL_AT_MOST_ONCE });
