@@ -19,12 +19,12 @@ namespace M2MqttAkkaNet
             });
             Receive<Terminated>(x =>
             {
-                Console.WriteLine($"Subscriber removed: {x.ActorRef.Path}");
+                Context.System.Log.Debug($"Subscriber removed: {x.ActorRef.Path}");
                 subscribers.Remove(x.ActorRef);
                 Context.Parent.Tell(new SubscriberTerminated(x.ActorRef));
                 if(!subscribers.Any())
                 {
-                    Console.WriteLine($"Topic {Self.Path.Name} stopped {Self.Path}");
+                    Context.System.Log.Debug($"Topic {Self.Path.Name} stopped {Self.Path}");
                     Context.Stop(Self);
                 }
             });
